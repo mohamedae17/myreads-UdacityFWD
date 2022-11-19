@@ -19,7 +19,6 @@ function App() {
 
   return (
     <div className="App">
-      { console.log(books) }
           <Routes>
            <Route exact path={"/"} element={<Main books={books} />}/>
            <Route  path={"/search"} element={<Search/>}/>
