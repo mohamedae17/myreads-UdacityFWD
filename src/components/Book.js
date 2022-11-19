@@ -15,7 +15,7 @@ const Book = ({books}) =>{
                   }}
                 ></div>
                 <div className="book-shelf-changer">
-                  <select>
+                  <select defaultValue={books.shelf ? books.shelf : "none"}>
                     <option value="none" disabled>
                       Move to...
                     </option>
