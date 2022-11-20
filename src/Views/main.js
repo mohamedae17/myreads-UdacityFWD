@@ -3,27 +3,20 @@ import {Link} from "react-router-dom"
 import { getAll } from "../BooksAPI";
 import React from 'react';
 
-const main =  ({books}) => {
-// async componentDidMount(){
-//   try{
-//     const books = await getAll();
-//     console.log(books);
-//   }catch(error){
-//     console.log(error);
-//   }
-// }
-const currentlyReading = books.filter((book) => book.shelf === "currentlyReading");
-    const whatToRead = books.filter((book) => book.shelf === "wantToRead");
-    const read = books.filter((book) => book.shelf === "read");
+const main = props => {
+const currentlyReading = props.books.filter((book) => book.shelf === "currentlyReading");
+    const whatToRead = props.books.filter((book) => book.shelf === "wantToRead");
+    const read = props.books.filter((book) => book.shelf === "read");
+    // console.log(typeof updateBookShelf);
         return( 
         <div className="list-books">
           <div className="list-books-title">
             <h1>MyReads</h1>
           </div>
           <div className="list-books-content">
-            <Shelves title="Currently Reading" books={currentlyReading} />
-            <Shelves title="Want to Read" books={whatToRead}/>
-            <Shelves title="Read"  books={read} />
+            <Shelves title="Currently Reading" books={currentlyReading} AM9={props.AM8}/>
+            <Shelves title="Want to Read" books={whatToRead} AM9={props.AM8}/>
+            <Shelves title="Read"  books={read} AM9={props.AM8}/>
 
           </div>
           <div className="open-search">

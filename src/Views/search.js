@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 
 import React from 'react'
+import Book from "../components/Book";
 
-const Search = () => {
+const Search = (books,query,updateBookShelf) => {
 
         return(
         <div className="search-books">
@@ -16,14 +17,13 @@ const Search = () => {
               Close
             </a> */}
             <div className="search-books-input-wrapper">
-              <input
-                type="text"
-                placeholder="Search by title, author, or ISBN"
-              />
+            <input type="text" placeholder="Search by title or author" value={query} onChange={(e) => query(e.target.value)} />
             </div>
           </div>
           <div className="search-books-results">
-            <ol className="books-grid"></ol>
+            <ol className="books-grid">
+
+            </ol>
           </div>
         </div>)
 }

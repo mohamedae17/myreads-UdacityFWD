@@ -3,14 +3,16 @@ import Book from "./Book";
 import React from 'react';
 
 
-const Shelves= ({title,books}) =>{
+const Shelves= props =>{
     return( 
           <div className="bookshelf">
-            <h2 className="bookshelf-title">{title}</h2>
+            <h2 className="bookshelf-title">{props.title}</h2>
             <div className="bookshelf-books">
               <ol className="books-grid">
-                {books?.map(b => (
-                  <Book books={b}/>
+                {props.books?.map(b => (
+                  <li key={b.id}>
+                  <Book books={b} onChangeShelf={props.AM9}/>
+                  </li>
                 ))}
               </ol>
             </div>
