@@ -1,12 +1,6 @@
-import React, { useState } from 'react';
-import * as BooksAPI from '..//BooksAPI';
-const Book = props =>{
+import React from 'react';
 
-  // const handleChange = (event) => {
-  //   console.log(event.target.value);
-  //   BooksAPI.update(books, event.target.value);
-  //   // updateBookShelf(books, event.target.value);
-  // };
+const Book = props =>{
         return(
             <div className="book">
               <div className="book-top">
@@ -16,12 +10,14 @@ const Book = props =>{
                     width: 128,
                     height: 193,
                     backgroundImage:
-                    `url(${props.books.imageLinks.thumbnail})`,
+                    `url(${props.books.imageLinks?.thumbnail})`,
                   }}
                 ></div>
                 <div className="book-shelf-changer">
-                  <select defaultValue={props.books.shelf ? props.books.shelf : "none"}  onChange={(event) => props.onChangeShelf({book:props.books},{whereTo:event.target.value})}>
-                    <option value="none" disabled>
+                  <select defaultValue={props.books.shelf ?
+                     props.books.shelf : "none"}  
+                     onChange={(event) => props.onChangeShelf({book:props.books},{whereTo:event.target.value})}>
+                    <option value="move to" disabled>
                       Move to...
                     </option>
                     <option value="currentlyReading">

@@ -17,7 +17,6 @@ const Shelves= props =>{
               </ol>
             </div>
           </div>)
-    
 }
 
 export default Shelves;

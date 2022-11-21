@@ -10,7 +10,7 @@ function App() {
   const [books,setBooks] = useState([]);    
   const [query, setQuery] = useState("");
   const [mapOfIdToBooks, setMapOfIdToBooks] = useState(new Map());
-  const [searchBooks, setSearchBooks] = useQuery(query);
+  const [searchBooks] = useQuery(query);
   const [mergedBooks, setMergedBooks] = useState([]);
 
   useEffect(() => {
@@ -21,18 +21,19 @@ function App() {
       }
       );
   }, [])
+
   const createMapOfBooks = (books) => {
     const map = new Map();
     books.map(book => map.set(book.id, book));
     return map;
   }
-  useEffect(() => {
 
-    const combined = searchBooks.map(book => {
-      if (mapOfIdToBooks.has(book.id)) {
-        return mapOfIdToBooks.get(book.id);
+  useEffect(() => {
+    const combined = searchBooks.map(b => {
+      if (mapOfIdToBooks.has(b.id)) {
+        return mapOfIdToBooks.get(b.id);
       } else {
-        return book;
+        return b;
       }
     })
     setMergedBooks(combined);
