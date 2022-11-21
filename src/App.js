@@ -9,52 +9,49 @@ import useQuery from "./Hooks/useQuery";
 function App() {
   const [books,setBooks] = useState([]);    
   const [query, setQuery] = useState("");
-  const [mapOfIdToBooks, setMapOfIdToBooks] = useState(new Map());
-  const [searchBooks] = useQuery(query);
-  const [mergedBooks, setMergedBooks] = useState([]);
+  const [IDS, setIds] = useState(new Map());
+  const [searchResult] = useQuery(query);
+  const [mixedBooks, setMixedBooks] = useState([]);
 
   useEffect(() => {
     BooksAPI.getAll()
       .then(data => {
         setBooks(data)
-        setMapOfIdToBooks(createMapOfBooks(data));
+        setIds(Mapping(data));
       }
       );
   }, [])
 
-  const createMapOfBooks = (books) => {
-    const map = new Map();
-    books.map(book => map.set(book.id, book));
-    return map;
+  const Mapping = (data) => {
+    const mymap = new Map();
+    data.map(d => mymap.set(d.id, d));
+    return mymap;
   }
 
   useEffect(() => {
-    const combined = searchBooks.map(b => {
-      if (mapOfIdToBooks.has(b.id)) {
-        return mapOfIdToBooks.get(b.id);
+    const mixed = searchResult.map(b => {
+      if (IDS.has(b.id)) {
+        return IDS.get(b.id);
       } else {
         return b;
       }
     })
-    setMergedBooks(combined);
-  }, [searchBooks])
+    setMixedBooks(mixed);
+  }, [searchResult])
 
   const AM7 = (book, whereTo) =>{
-    const updatedBooks = books.map(b => {
+    const resultBooks = books.map(b => {
       if (b.id === book.book.id) {
         book.book.shelf = whereTo.whereTo;
         return book.book;
       }
       return b;
     })
-      console.log(book.book)
-      console.log(books);
-       if (!books.some(e => e.id === book.book.id)){
-         console.log("TRUE");
+      if (!books.some(e => e.id === book.book.id)){
          book.book.shelf = whereTo.whereTo;
-         updatedBooks.push(book.book);
+         resultBooks.push(book.book);
        }
-    setBooks(updatedBooks);
+    setBooks(resultBooks);
     BooksAPI.update(book.book, whereTo.whereTo);
   }
 
@@ -62,7 +59,7 @@ function App() {
     <div className="App">
           <Routes>
            <Route exact path={"/"} element={<Main books={books} AM8={AM7} />}/>
-          <Route  path={"/search"} element={<Search books={mergedBooks} AM8={AM7} setQuery={setQuery} query={query}/>}/>
+          <Route  path={"/search"} element={<Search books={mixedBooks} AM8={AM7} setQuery={setQuery} query={query}/>}/>
            <Route  path={"*"} element={<NotFound/>}/>
           </Routes>  
     </div>
