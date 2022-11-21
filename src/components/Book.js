@@ -20,7 +20,7 @@ const Book = props =>{
                   }}
                 ></div>
                 <div className="book-shelf-changer">
-                  <select defaultValue={props.books.shelf}  onChange={(event) => props.onChangeShelf({book:props.books},{whereTo:event.target.value})}>
+                  <select defaultValue={props.books.shelf ? props.books.shelf : "none"}  onChange={(event) => props.onChangeShelf({book:props.books},{whereTo:event.target.value})}>
                     <option value="none" disabled>
                       Move to...
                     </option>
