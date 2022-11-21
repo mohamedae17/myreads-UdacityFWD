@@ -8,17 +8,37 @@ import { useEffect, useState } from "react";
 import useQuery from "./Hooks/useQuery";
 function App() {
   const [books,setBooks] = useState([]);    
+  const [query, setQuery] = useState("");
+  const [mapOfIdToBooks, setMapOfIdToBooks] = useState(new Map());
+  const [searchBooks, setSearchBooks] = useQuery(query);
+  const [mergedBooks, setMergedBooks] = useState([]);
 
   useEffect(() => {
     BooksAPI.getAll()
       .then(data => {
         setBooks(data)
+        setMapOfIdToBooks(createMapOfBooks(data));
       }
       );
   }, [])
+  const createMapOfBooks = (books) => {
+    const map = new Map();
+    books.map(book => map.set(book.id, book));
+    return map;
+  }
+  useEffect(() => {
+
+    const combined = searchBooks.map(book => {
+      if (mapOfIdToBooks.has(book.id)) {
+        return mapOfIdToBooks.get(book.id);
+      } else {
+        return book;
+      }
+    })
+    setMergedBooks(combined);
+  }, [searchBooks])
 
   const AM7 = (book, whereTo) =>{
-    // console.log(book.book);
     const updatedBooks = books.map(b => {
       if (b.id === book.book.id) {
         book.book.shelf = whereTo.whereTo;
@@ -26,7 +46,13 @@ function App() {
       }
       return b;
     })
-    console.log(updatedBooks);
+      console.log(book.book)
+      console.log(books);
+       if (!books.some(e => e.id === book.book.id)){
+         console.log("TRUE");
+         book.book.shelf = whereTo.whereTo;
+         updatedBooks.push(book.book);
+       }
     setBooks(updatedBooks);
     BooksAPI.update(book.book, whereTo.whereTo);
   }
@@ -35,7 +61,7 @@ function App() {
     <div className="App">
           <Routes>
            <Route exact path={"/"} element={<Main books={books} AM8={AM7} />}/>
-           {/* <Route  path={"/search"} element={<Search books={books} query={query}/>}/> */}
+          <Route  path={"/search"} element={<Search books={mergedBooks} AM8={AM7} setQuery={setQuery} query={query}/>}/>
            <Route  path={"*"} element={<NotFound/>}/>
           </Routes>  
     </div>
